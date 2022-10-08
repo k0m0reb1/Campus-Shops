@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       https://www.springframework.org/schema/context/spring-context.xsd">
+
+<!--    配置整合mybatis过程-->
+<!--    1.配置数据库相关properties的属性-->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+<!--    2.数据库连接池-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+<!--        配置数据库连接池属性-->
+        <property name="driverClass" value="${driver}"/>
+        <property name="jdbcUrl" value="${url}"/>
+        <property name="user" value="${username}"/>
+        <property name="password" value="${password}"/>
+<!--        C3P0连接池私有属性-->
+        <property name="maxPoolSize" value="30"/>
+        <property name="minPoolSize" value="10"/>
+<!--        关闭连接时不自动commit-->
+        <property name="autoCommitOnClose" value="false"/>
+<!--        获取连接超时时间-->
+        <property name="checkoutTimeout" value="10000"/>
+<!--        获取连接失败重试次数-->
+        <property name="acquireIncrement" value="2"/>
+    </bean>
+<!--    3.配置SqlSessionFactory对象-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <property name="typeAliasesPackage" value="com.sjtu.o2o.entity"/>
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+    </bean>
+<!--    4.配置扫描dao层接口包，动态实现Dao接口，注入到spring容器中-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <property name="basePackage" value="com.sjtu.o2o.dao"/>
+    </bean>
+</beans>
