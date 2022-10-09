@@ -9,5 +9,4 @@
         <setting name="useColumnLabel" value="true"/>
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
-
 </configuration>
