@@ -20,7 +20,7 @@ import java.util.List;
 public class AreaServiceImpl implements AreaService {
     @Autowired
     private AreaDao areaDao;
-
+    @Override
     public List<Area> getAreaList() {
         return areaDao.queryArea();
     }
