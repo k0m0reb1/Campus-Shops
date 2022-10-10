@@ -6,7 +6,6 @@ import com.sjtu.o2o.entity.PersonInfo;
 import com.sjtu.o2o.entity.Shop;
 import com.sjtu.o2o.entity.ShopCategory;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
@@ -52,5 +51,11 @@ public class ShopDaoTest extends BaseTest {
         shop.setShopName("testUpdate");
         int i = shopDao.updateShop(shop);
         assertEquals(i,1);
+    }
+
+    @Test
+    public void testQueryByShopId(){
+        Shop shop = shopDao.queryByShopId(2L);
+        System.out.println(shop);
     }
 }

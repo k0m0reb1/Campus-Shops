@@ -16,9 +16,9 @@ public class CodeUtil {
         String verifyCodeExpected = (String) request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
         String verifyCodeActual = HttpServletRequestUtil.getString(request,"verifyCodeActual");
         if(verifyCodeActual == null || !verifyCodeActual.equals(verifyCodeExpected)){
-            return true;
-        }else {
             return false;
+        }else {
+            return true;
         }
     }
 }

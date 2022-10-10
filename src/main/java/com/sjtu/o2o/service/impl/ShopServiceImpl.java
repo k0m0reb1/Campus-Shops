@@ -63,6 +63,40 @@ public class ShopServiceImpl implements ShopService {
         }
         return new ShopExecution(ShopStateEnum.CHECK,shop);
     }
+
+    @Override
+    public Shop getByShopId(long shopId) {
+        return shopDao.queryByShopId(shopId);
+    }
+
+    @Override
+    public ShopExecution modifyShop(Shop shop, InputStream shopImgInputStream, String fileName) {
+        if(shop == null || shop.getShopId() == null){
+            return new ShopExecution(ShopStateEnum.NULL_SHOP);
+        }
+        try{
+            // 1.判断是否需要处理图片
+            if(shopImgInputStream != null && fileName != null && !"".equals(fileName)){
+                Shop tempShop = shopDao.queryByShopId(shop.getShopId());
+                if(tempShop.getShopImg() != null){
+                    ImgUtil.deleteFileOrPath(tempShop.getShopImg());
+                }
+                addShopImg(shop,shopImgInputStream,fileName);
+            }
+            // 2.更新店铺信息
+            shop.setLastEditTime(new Date());
+            int effectedNum = shopDao.updateShop(shop);
+            if(effectedNum <= 0){
+                return new ShopExecution(ShopStateEnum.INNER_ERROR);
+            }else{
+                shop = shopDao.queryByShopId(shop.getShopId());
+                return new ShopExecution(ShopStateEnum.SUCCESS,shop);
+            }
+        }catch (Exception e){
+            throw new ShopOperationException("编辑店铺信息错误:" + e.getMessage());
+        }
+    }
+
     public void addShopImg(Shop shop, InputStream shopImgInputStream, String fileName){
         //获取shop图片目录的相对值路径
         String dest = PathUtil.getShopImgPath(shop.getShopId());

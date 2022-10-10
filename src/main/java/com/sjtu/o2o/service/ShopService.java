@@ -13,5 +13,28 @@ import java.io.InputStream;
  * @version: $
  */
 public interface ShopService {
+    /**
+     * 注册店铺信息，包括图片处理
+     * @param shop
+     * @param ShopImgInputStream 图片流
+     * @param fileName 图片名称
+     * @return
+     */
     public ShopExecution addShop(Shop shop, InputStream ShopImgInputStream, String fileName);
+
+    /**
+     * 通过店铺ID获取店铺信息
+     * @param shopId
+     * @return
+     */
+    Shop getByShopId(long shopId);
+
+    /**
+     * 更新店铺信息，包括对图片的处理
+     * @param shop
+     * @param shopImgInputStream
+     * @param fileName
+     * @return
+     */
+    ShopExecution modifyShop(Shop shop, InputStream shopImgInputStream, String fileName);
 }
