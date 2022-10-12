@@ -62,4 +62,15 @@ public class ShopServiceTest extends BaseTest {
         ShopExecution shopExecution = shopService.modifyShop(shop,new FileInputStream(shopImg),shopImg.getName());
         System.out.println(shopExecution.getShop().getShopImg());
     }
+
+    @Test
+    public void testGetShopList(){
+        Shop shopCondition = new Shop();
+        ShopCategory sc = new ShopCategory();
+        sc.setShopCategoryId(1L);
+        shopCondition.setShopCategory(sc);
+        ShopExecution se = shopService.getShopList(shopCondition,1,1);
+        System.out.println(se.getShopList().size());
+        System.out.println(se.getCount());
+    }
 }
